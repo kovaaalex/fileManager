@@ -16,6 +16,8 @@ import { move } from './src/basic/mv.js'
 import { copyFile } from './src/basic/cp.js'
 import { cd } from './src/navigation__working/cd.js'
 import { cwd } from 'process'
+import { up } from './src/navigation__working/up.js'
+import { listFiles } from './src/navigation__working/ls.js'
 async function printWorkingDirectory() {
     console.log(`You are currently in ${cwd()}`)
 }
@@ -97,6 +99,14 @@ async function fileManager() {
                 }
                 case 'cd': {
                     cd(paths[1])
+                    break
+                }
+                case 'up': {
+                    up()
+                    break
+                }
+                case 'ls': {
+                    listFiles()
                     break
                 }
                 default: {
