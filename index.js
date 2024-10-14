@@ -14,13 +14,18 @@ import { remove } from './src/basic/rm.js'
 import { renameFile } from './src/basic/rn.js'
 import { move } from './src/basic/mv.js'
 import { copyFile } from './src/basic/cp.js'
+import { cd } from './src/navigation__working/cd.js'
+import { cwd } from 'process'
+async function printWorkingDirectory() {
+    console.log(`You are currently in ${cwd()}`)
+}
 async function fileManager() {
     try {
         const readStream = stdin
         const args = process.argv.slice(2)
         const userName = args.find(arg => arg.startsWith('--username')).split('=')[1]
         console.log(`Welcome to the File Manager, ${userName}`)
-        console.log(`You are currently in ${homedir()}`)
+        await printWorkingDirectory()
         readStream.on('data', async (chunk) => {
             const data = chunk.toString().trim()
             const paths = data.split(' ')
@@ -90,11 +95,16 @@ async function fileManager() {
                     await decompress(paths[1], paths[2])
                     break
                 }
+                case 'cd': {
+                    cd(paths[1])
+                    break
+                }
                 default: {
                     console.error('Invalid input')
                     break
                 }
             }
+            await printWorkingDirectory()
         })
         process.on('SIGINT', () => process.exit())
         process.on('exit', () => console.log(`Thank you for using File Manager, ${userName}, goodbye!`))

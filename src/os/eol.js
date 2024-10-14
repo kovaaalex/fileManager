@@ -1,4 +1,4 @@
 import { EOL } from 'os'
 export async function getEOL() {
-    return EOL()
+    return EOL
 }
